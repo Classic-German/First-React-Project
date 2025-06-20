@@ -1,0 +1,25 @@
+{
+    "compilerOptions": {
+       "module": "esnext",
+		"moduleResolution": "bundler",
+		"outDir": "dist",
+		"lib": ["es2022", "dom", "dom.iterable"],
+		"noEmit": true,
+		"incremental": true,
+        "jsx": "preserve",
+        "esModuleInterop": true,
+		"skipLibCheck": true,
+		"target": "es2022",
+		"allowJs": false,
+		"resolveJsonModule": true,
+		"moduleDetection": "force",
+		"isolatedModules": true,
+
+		"strict": false,
+		"noUncheckedIndexedAccess": false,
+		"noImplicitOverride": true,
+    },
+    "exclude": [
+        "node_modules"
+    ]
+}
