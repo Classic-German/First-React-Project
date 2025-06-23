@@ -40,7 +40,7 @@ const Fruits = () => {
       method: "DELETE",
     })
       .then(() => console.log("Fruta eliminada com sucesso!"))
-      .then(() => window.location.reload()) // Redirect to the fruits page after submission
+      .then(() => window.location.reload()) // Reload to the fruits page after submission
       .catch((error) => console.error(error));
     }
   }
@@ -57,7 +57,7 @@ const Fruits = () => {
               <thead>
                 <tr>
                   {columns.map((column, i) => (
-                    <th className={styles.th} key={i}>
+                    <th className={styles.th} key={i}  >
                       {column}
                     </th>
                   ))}
