@@ -1,5 +1,5 @@
 import Fastify, { fastify } from 'fastify'
-import { Fruit, fruits } from './fruits'
+import { Fruit } from './fruits'
 import cors from '@fastify/cors'
 import { MongoClient } from 'mongodb'
 

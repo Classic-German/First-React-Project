@@ -2,7 +2,7 @@
 import { IconTrashXFilled } from "@tabler/icons-react";
 import styles from "./page.module.css";
 import { useRouter } from "next/navigation";
-import React, { useState, useEffect } from "react";
+import useSWR from "swr";
 
 type Fruit = {
   id: number;
@@ -13,18 +13,19 @@ type Fruit = {
   description: string;
 };
 
-const Fruits = () => {
-  const [fruits, setFruits] = useState([]);
+const fetcher = (url) => fetch(url).then((res) => res.json());
 
-  useEffect(() => {
-    fetch("http://localhost:8080/fruits")
-      .then((res) => res.json())
-      .then((data) => setFruits(data));
-  }, []);
+const Fruits = () => {
+ const { data, error } = useSWR("http://localhost:8080/fruits", fetcher);
+  // useEffect(() => {
+  //   fetch("http://localhost:8080/fruits")
+  //     .then((res) => res.json())
+  //     .then((data) => setFruits(data));
+  // }, []);
 
   const columns = ["Ícone", "Nome", "Vitamina", "CFT"];
   const router = useRouter();
-
+ 
   const handleClick = (id: number) => {
     router.push(`/fruit-page/${id}`);
   };
@@ -45,6 +46,9 @@ const Fruits = () => {
     }
   }
 
+
+
+
   return (
       <div className={styles.container}>
         <div className={styles.content}>
@@ -52,7 +56,8 @@ const Fruits = () => {
             <h1>Tudo o que precisa saber sobre estas frutas!</h1>
             <h2>Clica numa fruta para saber as suas características</h2>
           </div>
-          <div className={styles.tableContainer}>
+          <div className={styles.tableContainer}> 
+            {!data ? <div>Loading...</div> : 
             <table className={styles.table}>
               <thead>
                 <tr>
@@ -64,7 +69,10 @@ const Fruits = () => {
                 </tr>
               </thead>
               <tbody>
-                {fruits.map((fruit: Fruit) => (
+
+                  {error && <div>Erro ao carregar</div>}
+ 
+                {data.map((fruit: Fruit) => (
                   <tr
                     key={fruit.id}
                     onClick={() => handleClick(fruit.id)}
@@ -78,7 +86,7 @@ const Fruits = () => {
                   </tr>
                 ))}
               </tbody>
-            </table>
+            </table>}
           </div>
           <p className={styles.newFruit}>
             A sua fruta favorita não está aqui? Adicione-a!
