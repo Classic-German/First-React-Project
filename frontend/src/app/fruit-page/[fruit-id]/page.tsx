@@ -1,44 +1,30 @@
-'use client'
-import { useParams } from 'next/navigation';
-import styles from './page.module.css';
-import React, {useState, useEffect} from 'react';
+"use client";
+import { useParams } from "next/navigation";
+import styles from "./page.module.css";
+import useSWR from "swr";
 
-type Fruit = {
-    id: number;
-    icon: string;
-    name: string;
-    vitamin: string;
-    cft: boolean;
-    description: string;
-}
+const Fruits = () => {
+	const params = useParams();
+	const id = params["fruit-id"];
 
-    const Fruits = () => {
-        const [fruit, setFruit] = useState<Fruit>()
-        const params = useParams();
-        const id = params['fruit-id']
+	const fetcher = (url) => fetch(url).then((res) => res.json());
+	const { data } = useSWR(`http://localhost:8080/fruits/${id}`, fetcher, {revalidateOnFocus: true});
+	
+  return (
+		<div className={styles.container}>
+			{!data ? <div>Loading....</div> :
+			<div className={styles.content}>
+				<h1> Descobre mais sobre esta fruta: {data.name}{data.icon} </h1>
 
-        useEffect(() => {
-            fetch(`http://localhost:8080/fruits/${id}`)
-            .then(res => res.json())
-            .then(data => setFruit(data))
-        }, [id])
+				<div className={styles.text}>{data.description}</div>
+				<br /><br />
 
-    if (!fruit) return null;
-
-    return (
-        <div className={styles.container}>
-            
-            <div className={styles.content}>
-                <div >
-                    <h1>Descobre mais sobre esta fruta: {fruit.name}{fruit.icon}</h1>
-                </div>
-
-                <div className={styles.text}>{fruit.description}</div> <br/><br/>
-                <div className={styles.text}>
-                <p className={styles.text}>Veio de uma árvore: {fruit.cft ? 'Sim' : 'Não'}</p></div>
-            </div>
+				<div className={styles.text}>
+					<p className={styles.text}> Veio de uma árvore: {data.cft ? "Sim" : "Não"} </p>
         </div>
-    );
-}
+			</div>}
+		</div>
+	);
+};
 
 export default Fruits;
