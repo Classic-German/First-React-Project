@@ -1,6 +1,6 @@
 "use client";
 import styles from "./page.module.css";
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 
 const AddFruit = () => {
   const [icon, setIcon] = useState("");
@@ -8,8 +8,6 @@ const AddFruit = () => {
   const [vitamin, setVitamin] = useState("");
   const[cft, setCft] = useState("");
   const [description, setDescription] = useState("")
-
-  useEffect(() => {console.log(icon);}, [icon]);
 
   function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     // Prevent the browser from reloading the page
@@ -21,9 +19,7 @@ const AddFruit = () => {
         vitamin: vitamin,
         cft: cft === "true" ? true : false,
         description: description
-  };
-
-    console.log(formData);
+    };
     
     fetch('http://localhost:8080/fruits', { 
       method: "POST",
@@ -31,7 +27,6 @@ const AddFruit = () => {
         "Content-Type": "application/json",
       },
       body: JSON.stringify(formData)})
-      .then(() => console.log("Fruta adicionada com sucesso!"))
       .then(() => window.location.href = "http://localhost:3000/") // Redirect to the fruits page after submission
       .catch((error) => console.error(error));
 
