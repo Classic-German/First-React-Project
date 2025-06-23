@@ -47,7 +47,7 @@ const Fruits = () => {
           <h2>Clica numa fruta para saber as suas características</h2>
         </div>
         <div className={styles.tableContainer}> 
-          {!data ? <div>Loading...</div> : 
+          {!data ? <div className={styles.loader}></div> : 
           <table className={styles.table}>
             <thead>
               <tr>
